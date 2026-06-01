@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Una Carta para Ti 💖</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Fondo interactivo de corazones -->
+  <div class="heart-bg" id="heart-bg"></div>
+
+  <!-- Contenedor principal de la experiencia -->
+  <div class="container">
+    
+    <!-- Instrucciones flotantes (aparecen cuando se abre la carta) -->
+    <div class="instructions" id="instructions">
+      <p></p>
+    </div>
+
+    <!-- El Sobre en 3D -->
+    <div class="envelope-wrapper" id="envelope-wrapper">
+      <div class="envelope" id="envelope">
+        <!-- Parte trasera del sobre -->
+        <div class="envelope-back"></div>
+        
+        <!-- Solapa superior (abre con rotación 3D) -->
+        <div class="envelope-flap" id="envelope-flap"></div>
+        
+        <!-- Solapa delantera izquierda y derecha -->
+        <div class="envelope-front"></div>
+        
+        <!-- El sello que al tocarse abre la carta -->
+        <div class="envelope-seal" id="envelope-seal">
+          <div class="heart-seal">❤</div>
+        </div>
+
+        <!-- Texto indicativo debajo del sobre -->
+        <div class="envelope-prompt" id="envelope-prompt">
+          Toca el corazón para abrirla ✨
+        </div>
+      </div>
+    </div>
+
+    <!-- Hojas de la carta (inicialmente ocultas en el sobre, luego emergen) -->
+    <div class="letters-container" id="letters-container">
+      
+      <!-- HOJA 1: Razones por las que me gustas -->
+      <div class="letter-sheet" id="sheet-1" style="--rotate-deg: -5deg;">
+        <div class="sheet-decor-left">❤</div>
+        <div class="sheet-decor-right">❤</div>
+        <div class="sheet-content">
+          <h2 contenteditable="true" class="letter-title">Cosas que me gustan de ti 💖</h2>
+          <hr class="divider">
+          <ul class="reasons-list">
+            <li contenteditable="true">✨ Que seas mi <code>Nubesita</code> a la que mas quiero</li>
+            <li contenteditable="true">✨ Tu sonrisa que cada que la veo y escucho hace que se me acelere el corazón</li>
+            <li contenteditable="true">✨ Que contigo puedo aprender a abrir mi corazón</li>
+            <li contenteditable="true">✨ Cuando me vez a los ojos y luego sonries como si estuvieses viendo un diamante.</li>
+            <li contenteditable="true">✨ Tus abrazos que con cálidos como el sol del amanecer y me hacen sentir seguro y a salvo del resto del mundo.</li>
+            <li contenteditable="true">✨ La forma curiosa en la que piensas y vez el mundo </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- HOJA 3: Lo que quiero contigo (Metas a futuro) -->
+      <div class="letter-sheet" id="sheet-3" style="--rotate-deg: 0deg;">
+        <div class="sheet-decor-left">❤</div>
+        <div class="sheet-decor-right">❤</div>
+        <div class="sheet-content">
+          <h2 contenteditable="true" class="letter-title">Lo que quiero contigo 💫</h2>
+          <hr class="divider">
+          <p contenteditable="true" class="feelings-text">
+              Quiero contigo algo duradero nada de un rato por que si quise que fueras mi pareja es por te quiero y quien sabe tal vez duremos mucho o quizás no pero quiero que cada momento contigo valga la pena pero eso lo ira diciendo el tiempo.
+          </p>
+          <p contenteditable="true" class="feelings-text" style="font-weight: 600; margin-bottom: 5px; color: #c91c2c;">
+            Nuestras metas a futuro:
+          </p>
+          <ul class="reasons-list">
+            <li contenteditable="true">✨ Adoptar muchos animalitos</li>
+            <li contenteditable="true">✨ Viajar a lugares que siempre hemos soñado, perdiéndonos en nuevas aventuras y tomando mil fotos juntos.</li>
+            <li contenteditable="true">✨ Siempre estar junto a ti en las buenas y las malas.</li>
+            <li contenteditable="true">✨ Poder siempre superar obstaculos que se atraviesen pero siempre juntos.</li>
+            <li contenteditable="true">✨ Vivir momentos bonitos con constantes amor, paciencia y muchas risas.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- HOJA 2: Sentimientos y Poema (Editada por el usuario) -->
+      <div class="letter-sheet" id="sheet-2" style="--rotate-deg: 5deg;">
+        <div class="sheet-decor-left">❤</div>
+        <div class="sheet-decor-right">❤</div>
+        <div class="sheet-content">
+          <h2 contenteditable="true" class="letter-title">Lo que siento por ti 🌹</h2>
+          <hr class="divider">
+          <p contenteditable="true" class="feelings-text">
+            Mi Nubesita, quiero que sepas que te has convertido en alguien muy especial para mí. Hay cosas que siento por ti que van mas allá de lo que puedo expresar con palabras. Cada vez que pienso en ti, se mezclan muchas emociones dentro de mí, y mas aún cuando me haces sentir especial, querido y valorado. Todo eso me llena de felicidad y es algo que agradezco muchisimo, fue muy random como nos fuimos conociendo y como te volviste especial para mi y espero poder compartir momentos especiales contigo, Te quiero mucho.
+          </p>
+          <div class="poem-container">
+            <p contenteditable="true" class="poem-stanza">
+              Eres la Luz que alegra mis días.<br>
+              con la sonrisa que siempre quiero ver.<br>
+              con las mejillas que quiero acariciar<br>
+              y los abrazos que nunca quiero soltar.
+            </p>
+            <p contenteditable="true" class="poem-stanza">
+              <br>
+              <br>
+              <br>
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

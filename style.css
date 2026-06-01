@@ -1,0 +1,643 @@
+/* ==========================================================================
+   DISEÑO DE SISTEMA Y PALETA DE COLORES - CARTA ROMÁNTICA
+   ========================================================================== */
+
+:root {
+  --bg-gradient: radial-gradient(circle, #2d0b24 0%, #110311 100%);
+  --envelope-bg: #bf1520;
+  --envelope-dark: #960c14;
+  --envelope-light: #d6222d;
+  --envelope-shadow: rgba(0, 0, 0, 0.4);
+  --paper-bg: #ffffff;
+  --text-dark: #2c3e50;
+  --text-muted: #7f8c8d;
+  --accent-color: #e63946;
+  --font-romantic: 'Dancing Script', cursive;
+  --font-sans: 'Outfit', sans-serif;
+  --shadow-premium: 0 15px 35px rgba(0, 0, 0, 0.3), 0 5px 15px rgba(0, 0, 0, 0.2);
+  --shadow-sheet: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none; /* Evita que el usuario seleccione texto al arrastrar */
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg-gradient);
+  font-family: var(--font-sans);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* Permitir la selección de texto dentro de campos editables */
+[contenteditable="true"] {
+  user-select: text;
+  cursor: text;
+  outline: none;
+  transition: background-color 0.2s, box-shadow 0.2s;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+[contenteditable="true"]:hover {
+  background-color: rgba(230, 57, 70, 0.05);
+  box-shadow: 0 0 0 1px rgba(230, 57, 70, 0.2);
+}
+
+[contenteditable="true"]:focus {
+  background-color: rgba(230, 57, 70, 0.1);
+  box-shadow: 0 0 0 2px rgba(230, 57, 70, 0.4);
+}
+
+/* ==========================================================================
+   FONDO DE CORAZONES FLOTANTES
+   ========================================================================== */
+
+.heart-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bg-heart {
+  position: absolute;
+  color: rgba(230, 57, 70, 0.2);
+  font-size: var(--size, 20px);
+  animation: floatUp var(--duration, 8s) linear infinite;
+  opacity: 0;
+  bottom: -50px;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--opacity, 0.7);
+  }
+  90% {
+    opacity: var(--opacity, 0.7);
+  }
+  100% {
+    transform: translateY(-110vh) rotate(var(--rotate, 360deg));
+    opacity: 0;
+  }
+}
+
+/* Partícula de corazón (burst) al hacer clic o arrastrar */
+.heart-particle {
+  position: absolute;
+  pointer-events: none;
+  color: var(--accent-color);
+  font-size: var(--size, 15px);
+  z-index: 9999;
+  animation: burstParticle 0.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes burstParticle {
+  0% {
+    transform: translate(-50%, -50%) scale(1) translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0) translate(var(--tx, 50px), var(--ty, -50px)) rotate(var(--rot, 90deg));
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   CONTENEDOR PRINCIPAL E INSTRUCCIONES
+   ========================================================================== */
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+}
+
+.instructions {
+  position: absolute;
+  top: 30px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 12px 24px;
+  border-radius: 50px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 1s ease 1s, transform 1s ease 1s;
+  pointer-events: none;
+  text-align: center;
+}
+
+.instructions.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.instructions p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+  margin: 4px 0;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   DISEÑO 3D DEL SOBRE (ENVELOPE)
+   ========================================================================== */
+
+.envelope-wrapper {
+  position: absolute;
+  perspective: 1000px;
+  z-index: 5;
+  transition: transform 0.8s ease, opacity 0.8s ease;
+}
+
+.envelope-wrapper.open {
+  transform: translateY(200px) scale(0.85);
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.envelope-wrapper.fade-out {
+  transform: translateY(250px) scale(0.6);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.envelope {
+  position: relative;
+  width: 320px;
+  height: 200px;
+  background-color: var(--envelope-bg);
+  box-shadow: var(--shadow-premium);
+  border-radius: 0 0 10px 10px;
+  cursor: pointer;
+  transform-style: preserve-3d;
+}
+
+/* Parte trasera (interior del sobre) */
+.envelope-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: var(--envelope-dark);
+  border-radius: 0 0 10px 10px;
+}
+
+/* Solapa superior (abre con rotación 3D) */
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(0 0, 50% 58%, 100% 0);
+  background-color: var(--envelope-light);
+  transform-origin: top;
+  z-index: 4;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.2s 0.2s;
+  border-radius: 8px 8px 0 0;
+}
+
+/* Solapa delantera izquierda, derecha y fondo */
+.envelope-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+}
+
+.envelope-front::before {
+  /* Solapa izquierda y derecha en diagonal */
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(0 0, 50% 50%, 0 100%);
+  background-color: var(--envelope-dark);
+  border-radius: 0 0 0 10px;
+}
+
+.envelope-front::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(100% 0, 50% 50%, 100% 100%);
+  background-color: var(--envelope-dark);
+  border-radius: 0 0 10px 0;
+}
+
+/* Pieza delantera inferior */
+.envelope::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(0 100%, 50% 48%, 100% 100%);
+  background-color: var(--envelope-bg);
+  z-index: 3;
+  border-radius: 0 0 10px 10px;
+}
+
+/* Sello de corazón */
+.envelope-seal {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  transition: transform 0.3s ease, opacity 0.5s ease;
+}
+
+.heart-seal {
+  font-size: 3rem;
+  color: #ff2a4b;
+  cursor: pointer;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  animation: pulse 1.5s ease-in-out infinite;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+.heart-seal:hover {
+  animation: pulseFast 0.6s ease-in-out infinite;
+  transform: scale(1.15);
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes pulseFast {
+  0%, 100% { transform: scale(1.1); }
+  50% { transform: scale(1.25); }
+}
+
+/* Texto indicativo */
+.envelope-prompt {
+  position: absolute;
+  top: 120%;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  font-family: var(--font-romantic);
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  animation: floatText 2s ease-in-out infinite;
+}
+
+@keyframes floatText {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Animaciones cuando el sobre se abre */
+.envelope-wrapper.active .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 1; /* Pasa detrás para permitir salir las hojas */
+}
+
+.envelope-wrapper.active .envelope-seal {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+}
+
+.envelope-wrapper.active .envelope-prompt {
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+/* ==========================================================================
+   LAS HOJAS / CARTAS (LETTER SHEETS)
+   ========================================================================== */
+
+.letters-container {
+  position: absolute;
+  width: 100%;
+  max-width: 100%;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.letter-sheet {
+  position: absolute;
+  width: 380px;
+  height: 520px;
+  background-color: var(--paper-bg);
+  border-radius: 8px;
+  box-shadow: var(--shadow-sheet);
+  padding: 35px 25px;
+  opacity: 0;
+  transform: scale(0.1) translateY(100px);
+  transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), 
+              transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), 
+              box-shadow 0.3s,
+              z-index 0.1s;
+  pointer-events: none;
+  cursor: grab;
+  z-index: 10;
+  overflow: hidden;
+  border: 1px solid rgba(230, 57, 70, 0.1);
+  --drag-x: 0px;
+  --drag-y: 0px;
+}
+
+#sheet-1 {
+  --base-x: -106%;
+  --base-y: -7%;
+}
+
+#sheet-3 {
+  --base-x: -8%;
+  --base-y: -7%;
+}
+
+#sheet-2 {
+  --base-x: 90%;
+  --base-y: -7%;
+}
+
+.letter-sheet:active {
+  cursor: grabbing;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+}
+
+/* Decoraciones de corazones a los lados de la hoja */
+.sheet-decor-left,
+.sheet-decor-right {
+  position: absolute;
+  font-size: 1.2rem;
+  color: rgba(230, 57, 70, 0.3);
+  top: 15px;
+  pointer-events: none;
+  animation: heartbeat 2s infinite ease-in-out;
+}
+
+.sheet-decor-left {
+  left: 20px;
+}
+
+.sheet-decor-right {
+  right: 20px;
+  animation-delay: 0.5s;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.15); opacity: 0.6; color: rgba(230, 57, 70, 0.6); }
+}
+
+/* Agregar decoraciones laterales inferiores */
+.letter-sheet::before,
+.letter-sheet::after {
+  content: "❤";
+  position: absolute;
+  font-size: 1.2rem;
+  color: rgba(230, 57, 70, 0.3);
+  bottom: 15px;
+  pointer-events: none;
+}
+.letter-sheet::before {
+  left: 20px;
+}
+.letter-sheet::after {
+  right: 20px;
+}
+
+/* Contenido de la carta */
+.sheet-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: var(--text-dark);
+}
+
+.letter-title {
+  font-family: var(--font-romantic);
+  font-size: 2.1rem;
+  color: #c91c2c;
+  text-align: center;
+  margin-bottom: 5px;
+  line-height: 1.2;
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(230, 57, 70, 0.3), transparent);
+  margin-bottom: 20px;
+}
+
+/* Lista de razones (Hoja 1) */
+.reasons-list {
+  list-style: none;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.reasons-list li {
+  margin-bottom: 8px;
+  position: relative;
+  font-weight: 300;
+}
+
+.reasons-list code {
+  background-color: rgba(230, 57, 70, 0.08);
+  color: #d6222d;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-family: Consolas, Monaco, monospace;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Sentimientos y Poema (Hoja 2) */
+.feelings-text {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  font-weight: 300;
+  text-align: justify;
+  margin-bottom: 20px;
+}
+
+.poem-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.poem-stanza {
+  font-family: var(--font-romantic);
+  font-size: 1.25rem;
+  line-height: 1.4;
+  color: #551325;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.poem-stanza:last-child {
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+   ESTADO ABIERTO: ANIMACIÓN DE REVELACIÓN Y EMANACIÓN
+   ========================================================================== */
+
+.envelope-wrapper.active + .letters-container {
+  pointer-events: auto; /* Permitir interactuar con las hojas al estar abiertas */
+}
+
+/* Posiciones finales de las hojas al desplegarse */
+.envelope-wrapper.active + .letters-container .letter-sheet {
+  opacity: 1;
+  transform: translate(calc(var(--base-x) + var(--drag-x)), calc(var(--base-y) + var(--drag-y))) scale(1) rotate(var(--rotate-deg));
+  pointer-events: auto;
+}
+
+.envelope-wrapper.active + .letters-container #sheet-1 {
+  transition-delay: 0s;
+}
+
+.envelope-wrapper.active + .letters-container #sheet-3 {
+  transition-delay: 0.15s;
+}
+
+.envelope-wrapper.active + .letters-container #sheet-2 {
+  transition-delay: 0.3s;
+}
+
+
+/* ==========================================================================
+   RESPONSIVIDAD Y ADAPTABILIDAD MÓVIL
+   ========================================================================== */
+
+@media (max-width: 820px) {
+  .envelope-wrapper.open {
+    transform: translateY(220px) scale(0.7);
+    opacity: 0.4;
+  }
+
+  .letters-container {
+    height: 100vh;
+    align-items: flex-start;
+    padding-top: 60px;
+  }
+
+  .letter-sheet {
+    width: 320px;
+    height: 440px;
+    padding: 25px 15px;
+  }
+
+  /* Las hojas se apilan en pantallas pequeñas */
+  #sheet-1 {
+    --base-x: -50%;
+    --base-y: -35%;
+  }
+  #sheet-3 {
+    --base-x: -47%;
+    --base-y: 5%;
+  }
+  #sheet-2 {
+    --base-x: -44%;
+    --base-y: 45%;
+  }
+
+  .envelope-wrapper.active + .letters-container #sheet-1 {
+    left: 50%;
+    z-index: 11;
+  }
+  .envelope-wrapper.active + .letters-container #sheet-3 {
+    left: 50%;
+    z-index: 10;
+  }
+  .envelope-wrapper.active + .letters-container #sheet-2 {
+    left: 50%;
+    z-index: 9;
+  }
+  
+  .letter-title {
+    font-size: 1.7rem;
+  }
+
+  .reasons-list, .feelings-text {
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+
+  .poem-stanza {
+    font-size: 1.1rem;
+    line-height: 1.3;
+  }
+}
+
+@media (max-width: 480px) {
+  .instructions {
+    top: 15px;
+    padding: 8px 16px;
+    width: 90%;
+  }
+  
+  .instructions p {
+    font-size: 0.75rem;
+  }
+
+  .letter-sheet {
+    width: 290px;
+    height: 420px;
+  }
+  
+  #sheet-1 {
+    --base-x: -50%;
+    --base-y: -40%;
+  }
+  #sheet-3 {
+    --base-x: -48%;
+    --base-y: 5%;
+  }
+  #sheet-2 {
+    --base-x: -46%;
+    --base-y: 50%;
+  }
+}
